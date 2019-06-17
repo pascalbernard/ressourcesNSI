@@ -1,632 +1,686 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Représentation des données et programmation - DIU EIL - Bloc 1</title>
 
-  <head>
-    <meta charset="utf-8">
+<meta name="description" content="Bloc1">
+<link rel="canonical" href="https://diu-uf-bordeaux.github.io/bloc1/"><link rel="alternate" type="application/rss+xml" title="DIU EIL - Bloc 1" href="/bloc1/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/bloc1/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/bloc1/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/bloc1/assets/favicon-16x16.png"><link rel="manifest" href="/bloc1/assets/site.webmanifest"><link rel="mask-icon" href="/bloc1/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/bloc1/assets/favicon.ico">
 
-    <title>Git Introduction II - Remote Repositories</title>
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/bloc1/assets/browserconfig.xml">
 
-    <meta name="description" content="Introduction to Git Remote Repositories">
-    <meta name="author" content="Luis Ibanez">
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/bloc1/assets/css/main.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" ><!-- start custom head snippets -->
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<!-- end custom head snippets --><script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
 
-    <link rel="stylesheet" href="revealjs/css/reveal.min.css">
-    <link rel="stylesheet" href="revealjs/css/theme/sky.css" id="theme">
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
 
-    <!-- For syntax highlighting -->
-    <link rel="stylesheet" href="revealjs/lib/css/zenburn.css">
+  window.isFormElement = function(node) {
+    var tagName = node.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  };
 
-    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
-    <script>
-      document.write( '<link rel="stylesheet" href="revealjs/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
-    </script>
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i;
+      loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cbs[i]();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();
+(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
 
-  </head>
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
 
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();
+(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();
+</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.4',
+      sources: {
+        font_awesome: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn1.lncld.net/static/js/3.4.1/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/bloc1/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script></head>
   <body>
-
-    <div class="reveal">
-
-      <!-- Any section element inside of this container is displayed as a slide -->
-      <div class="slides">
-        <section>
-          <h1>Git</h1>
-          <h2>Introduction</h2>
-          <h3>Part II</h3>
-          <p>
-            <small>Created by <a href="https://opensource.com/users/luis-ibanez">Luis Ibanez</a> / <a href="http://twitter.com/luisibanez">@luisibanez</a></small>
-          </p>
-        </section>
-
-        <section>
-          <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">
-             <img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" />
-          </a>
-          <br />
-          <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Git Introduction</span>
-           by
-          <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Luis Ibanez</span>
-           is licensed under a
-          <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
-        </section>
-
-        <section>
-          <h3>Complete First</h3>
-          <h2><a href="http://www.opensourcesoftwarepractice.org/Git-Introduction-Part-I">Introduction Part I</a></h2>
-        </section>
-
-        <section>
-          <h3>Clone Repository</h3>
-          <pre><code data-trim contenteditable>
-git clone git@github.com:ossp/Git-Branchy-Story-Exercise-02.git
-          </code></pre>
-          <ul>
-            <li>github username = "ossp"
-            <li>repository name = "Branchy-Story-Exercise-02"
-          </ul>
-        </section>
-
-        <section>
-          <h3>Go Inside the Directory</h3>
-          <pre><code data-trim contenteditable>
-cd Branchy-Story-Exercise-02
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>See the remote repositories </h3>
-          <pre><code data-trim contenteditable>
-git remote -v
-          </code></pre>
-          <ul>
-            <li>"-v" is for "verbose"
-          </ul>
-        </section>
-
-        <section>
-          <h4>At this point we have a</h4>
-					<h3><a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows#Centralized-Workflow">Shared Repository</a></h2>
-          <a href="#" class="image">
-            <img width="900" src="http://git-scm.com/figures/18333fig0501-tn.png" alt="Shared Repository">
-          </a>
-					<p>Courtesy of <a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows">git-scm Book</a>.</p>
-        </section>
-
-        <section>
-          <h3>This configuration</h3>
-          <h3>is used for a</h3>
-					<h2><a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows#Centralized-Workflow">Centralized Workflow</a></h2>
-        </section>
-
-        <section>
-          <h3>Git enables</h3>
-          <h3>other configurations...</h3>
-        </section>
-
-        <section>
-          <h3>to support</h3>
-          <h3>other workflows...</h3>
-        </section>
-
-        <section>
-          <h4>For example</h4>
-          <h3><a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows#Integration-Manager-Workflow">Integration Manager Workflow</a></h3>
-          <a href="#" class="image">
-            <img width="900" src="http://git-scm.com/figures/18333fig0502-tn.png" alt="Integration manager workflow">
-          </a>
-					<p>Courtesy of <a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows">git-scm Book</a>.</p>
-        </section>
-
-        <section>
-          <h2><a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows#Integration-Manager-Workflow">Let's do this ! </a></h2>
-        </section>
-
-        <section>
-          <h3>You already have</h3>
-          <h3>local private</h3>
-          <h3>repositories</h3>
-        </section>
-
-        <section>
-          <h3>Let's create</h3>
-          <h3>your public</h3>
-          <h3>repositories</h3>
-        </section>
-
-        <section>
-          <h3>We do this</h3>
-          <h3>by <a href="https://help.github.com/articles/fork-a-repo">forking</a></h3>
-          <h3>in Github</h3>
-        </section>
-
-        <section>
-          <h2>Fork the Repository</h2>
-          <a href="#" class="image">
-            <img src="images/GitIntroductionPartII-001.png" alt="Fork the repository">
-          </a>
-          </p>
-        </section>
-
-        <section>
-          <h2>Copy the Fork Address</h2>
-          <a href="#" class="image">
-            <img src="images/GitIntroductionPartII-002.png" alt="Fork address">
-          </a>
-          </p>
-        </section>
-
-        <section>
-          <h3>Now go to your</h3>
-          <h3>local private</h3>
-          <h3>repository</h3>
-        </section>
-
-        <section>
-          <h3>Add the Remote repository</h3>
-          <pre><code data-trim contenteditable>
-git remote add luisgithub git@github.com:luisibanez/Git-Branchy-Story-Exercise-02.git
-          </code></pre>
-          <ul>
-            <li>luisgithub = local name for remote repository
-          </ul>
-        </section>
-
-        <section>
-          <h3>See the remote repositories </h3>
-          <pre><code data-trim contenteditable>
-git remote -v
-          </code></pre>
-          <a href="#" class="image">
-            <img src="images/GitIntroductionPartII-003.png" alt="Add remote">
-          </a>
-        </section>
-
-        <section>
-          <h1>Your Turn !</h1>
-        </section>
-
-       <section>
-          <h2>Add Remote</h2>
-          <h2>Repositories</h2>
-          <p>Work with your Team</p>
-          <ul>
-            <li>Ask team members for their fork address
-            <li>Add their address as a remote
-            <li>Name the remotes after their first names
-          </ul>
-        </section>
-
-        <section>
-          <h2>Use HTTPS</h2>
-          <p>For the address of your team mates</p>
-          <ul>
-            <li>Use:
-            <li>https://github.com/aaronsw/...
-            <li>instead of
-            <li>git@github.com:aaronsw/...
-          </ul>
-        </section>
-
-        <section>
-          <h3>Now let's create</h3>
-          <h3>a team directory</h3>
-          <h3>to work together</h3>
-        </section>
-
-        <section>
-          <h3>One Team Member</h3>
-          <h3>Creates Team Directory</h3>
-          <pre><code data-trim contenteditable>
-mkdir FantasticFour
-
-cd FantasticFour
-
-nano README.md
-
-cd ..
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>One Team Member</h3>
-          <h3>Commits Team Directory</h3>
-          <pre><code data-trim contenteditable>
-git add FantasticFour
-
-git commit -m "Started team directory"
-          </code></pre>
-          <h4>and push it upstream</h4>
-          <pre><code data-trim contenteditable>
-git push origin master
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>Your push may fail... </h3>
-          <h4>with a message like this</h4>
-          <pre><code data-trim contenteditable>
- ! [rejected]        master -> master (non-fast-forward)
-error: failed to push some refs to 'git@github.com:ossp/Git-Branchy-Story-Exercise-01.git'
-hint: Updates were rejected because a pushed branch tip is behind its remote
-hint: counterpart. Check out this branch and merge the remote changes
-hint: (e.g. 'git pull') before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>Your push may fail... </h3>
-          <h4>with a message like this</h4>
-          <a href="#" class="image">
-            <img src="images/GitIntroductionPartII-007.png" alt="Check logs">
-          </a>
-        </section>
-
-        <section>
-          <h3>This just means</h3>
-          <h3>than someone else</h3>
-          <h3>pushed before you</h3>
-        </section>
-
-        <section>
-          <h3>so now</h3>
-          <h3>you have to update</h3>
-          <h3>your local repository</h3>
-        </section>
-
-        <section>
-          <h4>Update With the Command</h4>
-          <pre><code data-trim contenteditable>
-git pull origin master
-          </code></pre>
-          <h4>and then try again the Command</h4>
-          <pre><code data-trim contenteditable>
-git push origin master
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>You may have</h3>
-          <h3>to do it</h3>
-          <h3>multiple times</h3>
-        </section>
-
-        <section>
-          <h1>Breath!</h1>
-          <h1>Smile!</h1>
-        </section>
-
-        <section>
-          <h3>All Team Members</h3>
-          <h3>Update their local repositories</h3>
-          <pre><code data-trim contenteditable>
-git pull origin master
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>All Team Members</h3>
-          <h3>Look at recent commits</h3>
-          <pre><code data-trim contenteditable>
-git log
-          </code></pre>
-          <a href="#" class="image">
-            <img src="images/GitIntroductionPartII-004.png" alt="Check logs">
-          </a>
-        </section>
-
-       <section>
-          <h2>Note That</h2>
-          <p>The log tells you:</p>
-          <ul>
-            <li>Who did it
-            <li>When it was done
-          </ul>
-        </section>
-
-        <section>
-          <h3>All Team Members</h3>
-          <h3>Look at recent commits</h3>
-          <h4>Using short format</h4>
-          <pre><code data-trim contenteditable>
-git log --oneline
-          </code></pre>
-          <a href="#" class="image">
-            <img src="images/GitIntroductionPartII-005.png" alt="Check logs one lined">
-          </a>
-       </section>
-
-       <section>
-          <h2>Note That</h2>
-          <p>Every commit</p>
-          <p>is identified by a hash</p>
-          <p>such as:</p>
-          <pre><code data-trim contenteditable>
-5d7d137a3592fe402a4bc282375c2d8bb878326c
-          </code></pre>
-       </section>
-
-       <section>
-          <h3>You can use</h3>
-          <h3>the first characters</h3>
-          <h3>to refer</h3>
-          <h3>to this commit</h3>
-       </section>
-
-       <section>
-          <h2>You can use</h2>
-          <h3>"git show"</h3>
-          <pre><code data-trim contenteditable>
-git show 5d7d137
-          </code></pre>
-          <h4>to find out more</h4>
-          <h4>about this commit</h4>
-        </section>
-
-        <section>
-          <h3>See commit details</h3>
-          <pre><code data-trim contenteditable>
-git show 5d7d137
-          </code></pre>
-          <a href="#" class="image">
-            <img src="images/GitIntroductionPartII-006.png" alt="Add remote">
-          </a>
-        </section>
-
-        <section>
-          <h2>Time to</h2>
-          <h2>Go Wild!</h2>
-        </section>
-
-        <section>
-          <h2>Each Team Member</h2>
-          <ul>
-            <li>Picks a "character" name
-            <li>Go into the team directory
-            <li>Creates a file with that name
-            <li>and extension ".md"
-          </ul>
-        </section>
-
-        <section>
-          <h2>Each Team Member</h2>
-          <ul>
-            <li>Inside the file write one sentence
-            <li>Describing the state of the character
-          </ul>
-        </section>
-
-        <section>
-          <h2>Each Team Member</h2>
-          <ul>
-            <li>Git add the file
-            <li>Git commit
-            <li>Git push upstream
-          </ul>
-        </section>
-
-       <section>
-          <h3>Your push may fail... </h3>
-          <h4>with a message like this</h4>
-          <pre><code data-trim contenteditable>
- ! [rejected]        master -> master (non-fast-forward)
-error: failed to push some refs to 'git@github.com:ossp/Git-Branchy-Story-Exercise-01.git'
-hint: Updates were rejected because a pushed branch tip is behind its remote
-hint: counterpart. Check out this branch and merge the remote changes
-hint: (e.g. 'git pull') before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>This just means</h3>
-          <h3>than someone else</h3>
-          <h3>pushed before you</h3>
-        </section>
-
-        <section>
-          <h3>so now</h3>
-          <h3>you have to update</h3>
-          <h3>your local repository</h3>
-        </section>
-
-        <section>
-          <h4>Update With the Command</h4>
-          <pre><code data-trim contenteditable>
-git pull origin master
-          </code></pre>
-          <h4>and then try again the Command</h4>
-          <pre><code data-trim contenteditable>
-git push origin master
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>You may have</h3>
-          <h3>to do it</h3>
-          <h3>multiple times</h3>
-        </section>
-
-        <section>
-          <h2>Each Team Member</h2>
-          <ul>
-            <li>Edit the file of her/his character
-            <li>Change the state of the character
-          </ul>
-        </section>
-
-        <section>
-          <h2>Each Team Member</h2>
-          <ul>
-            <li>Git create branch
-            <li>Git select branch
-            <li>Git add
-            <li>Git commit into branch
-          </ul>
-        </section>
-
-        <section>
-          <h4>Use the Commands</h4>
-          <pre><code data-trim contenteditable>
-git branch MyNewBranch
-git checkout MyNewBranch
-vim myCharacter.md
-git add myCharacter.md
-git commit
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>The commit message</h3>
-          <h4>Must explain "how" and "why"</h4>
-          <h4>the character changed state</h4>
-        </section>
-
-        <section>
-          <h2>Each Team Member</h2>
-          <ul>
-            <li>Git move to master branch
-            <li>Git update master from upstream
-            <li>Git merge branch into master
-            <li>Git push master upstream
-          </ul>
-        </section>
-
-        <section>
-          <h4>Use the Commands</h4>
-          <pre><code data-trim contenteditable>
-git checkout master
-git pull origin master
-git merge --no-ff MyNewBranch
-git push origin master
-          </code></pre>
-        </section>
-
-        <section>
-          <h2>Reading the Story</h2>
-          <h4>as the story grows</h4>
-          <h4>you can read it</h4>
-          <h4>by using the command:</h4>
-          <pre><code data-trim contenteditable>
-git  log  --no-merges   .
-          </code></pre>
-        </section>
-
-        <section>
-          <h4>This will show you</h4>
-          <h4>what happened</h4>
-          <h4>to all the characters</h4>
-          <h4>in that directory</h4>
-        </section>
-
-        <section>
-          <h3>To read the Story</h3>
-          <h4>of a single character</h4>
-          <h4>use the command:</h4>
-          <pre><code data-trim contenteditable>
-git  log  --no-merges   myCharacter.md
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>To read the summary</h3>
-          <h4>of the story</h4>
-          <h4>use the command:</h4>
-          <pre><code data-trim contenteditable>
-git  log  --no-merges   myCharacter.md --oneline
-          </code></pre>
-        </section>
-
-        <section>
-          <h3>You can see the Graph</h3>
-          <h4>with the command</h5>
-          <pre><code data-trim contenteditable>
-git log  --graph
-          </code></pre>
-          <a href="#" class="image">
-            <img src="images/GitIntroductionPartII-008.png" alt="Add remote">
-          </a>
-        </section>
-
-        <section>
-          <h3>You can see the Graph</h3>
-          <h4>with the tool gitk</h4>
-          <pre><code data-trim contenteditable>
-gitk
-          </code></pre>
-          <a href="#" class="image">
-            <img src="images/GitIntroductionPartII-009.png" alt="Add remote">
-          </a>
-        </section>
-
-
-        <section>
-          <h1>Your Turn !</h1>
-        </section>
-
-        <section>
-          <h2>Unleash your imagination!</h2>
-        </section>
-
-        <section>
-          <h3>Coordinate</h3>
-          <h3>with your team mates</h3>
-          <ul>
-            <li>Interactions between your characters
-            <li>Apply the state changes to your files
-            <li>Git commit, add, merge, every time
-            <li>Read the story as it progresses
-          </ul>
-        </section>
-
-        <section>
-          <h2>Complete Five</h2>
-          <h2>Interactions</h2>
-          <h2>per character</h2>
-        </section>
-
-        <section>
-          <h1>Breath!</h1>
-          <h1>Smile!</h1>
-        </section>
-
-        <section>
-          <h1>THE END</h1>
-          <h3>BY Luis Ibanez</h3>
-        </section>
-
-      </div>
-
-    </div>
-
-    <script src="revealjs/lib/js/head.min.js"></script>
-    <script src="revealjs/js/reveal.min.js"></script>
-
-    <script>
-      // Full list of configuration options available here:
-      // https://github.com/hakimel/reveal.js#configuration
-      Reveal.initialize({
-        controls: true,
-        progress: true,
-        history: true,
-        center: true,
-        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
-        // Optional libraries used to extend on reveal.js
-        dependencies: [
-          { src: 'revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-          { src: 'revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'revealjs/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-          { src: 'revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-          { src: 'revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-        ]
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 67 43" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g id="step0">
+        <g transform="matrix(1,0,0,1,-82.8175,-84.9751)">
+            <path d="M144.968,104.236C146.542,102.165 147.339,99.727 147.339,96.978C147.339,93.869 146.201,91.155 143.963,88.917C141.79,86.683 139.064,85.55 135.861,85.55L124.635,85.55C123.06,85.55 121.958,86.65 121.958,88.226L121.958,124.474C121.958,126.024 123.083,127.15 124.635,127.15L137.199,127.15C140.476,127.15 143.317,125.972 145.641,123.648C147.999,121.292 149.195,118.451 149.195,115.205L149.195,113.609C149.195,111.232 148.535,108.987 147.235,106.942C146.6,105.911 145.839,105.003 144.968,104.236ZM138.248,99.947C137.54,100.688 136.574,101.047 135.293,101.047L129.938,101.047L129.938,93.528L135.861,93.528C136.922,93.528 137.638,93.812 138.334,94.506C139.055,95.227 139.363,95.966 139.363,96.978C139.362,98.246 139.029,99.135 138.248,99.947ZM129.938,109.025L136.631,109.025C137.862,109.025 138.935,109.475 139.825,110.363C140.759,111.299 141.214,112.361 141.214,113.61L141.214,115.206C141.214,116.28 140.827,117.19 140.032,117.987C139.224,118.794 138.324,119.17 137.199,119.17L129.939,119.17L129.938,109.025Z" style="fill:rgb(68,58,49);fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-5.43132,-31.7475)">
+            <path d="M17.76,48.177L17.76,60.638C17.76,62.972 18.567,64.986 20.255,66.676C21.946,68.367 23.879,69.171 26.294,69.171C28.629,69.171 30.642,68.367 32.252,66.676C33.943,64.985 34.828,62.971 34.828,60.638L34.828,33.748C34.828,33.184 35.069,32.944 35.633,32.944L39.819,32.944C40.383,32.944 40.705,33.184 40.705,33.748L40.705,60.638C40.705,64.583 39.255,67.964 36.438,70.782C33.62,73.599 30.239,75.049 26.293,75.049C22.349,75.049 18.887,73.599 16.068,70.782C13.251,67.965 11.882,64.583 11.882,60.638L11.882,54.218L17.76,48.177Z" style="fill:rgb(68,58,49);fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-5.43132,-31.7475)">
+            <path d="M17.766,32.95L6.252,32.95L6.252,37.349L11.883,37.349L11.883,54.218L17.76,48.177L17.766,32.95Z" style="fill:rgb(0,159,227);fill-rule:nonzero;"/>
+        </g>
+    </g>
+</svg>
+<a title="Bloc1" href="/bloc1/">DIU EIL - Bloc 1</a></div></div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/bloc1/didactique/didactique.html">Didactique</a></li><li class="navigation__item"><a href="/bloc1/prog/data.html">Représentation de l'information</a></li><li class="navigation__item"><a href="/bloc1/prog/prog.html">Programmation</a></li><li class="navigation__item"><a href="/bloc1/web">Web</a></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet --><article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Représentation des données et programmation</h1></header></div><meta itemprop="headline" content="Représentation des données et programmation"><meta itemprop="author" content="Département Informatique - Université de Bordeaux"/><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet --><div class="article__content" itemprop="articleBody"><ul>
+  <li><a href="./didactique/didactique.html">Didactique</a></li>
+  <li><a href="./welcome.html">TP de bienvenue</a></li>
+  <li><a href="/bloc1/prog/data.html">Représentation de l’information</a> - version <a href="./prog/data.html?print-pdf">imprimable</a></li>
+  <li><a href="/bloc1/prog/prog.html">Programmation</a> - version <a href="./prog/prog.html?print-pdf">imprimable</a></li>
+  <li><a href="./web">Web</a></li>
+</ul>
+
+<p><em>Remarque: Les version imprimables rendent mieux sous chrome. Elles sont plus
+longues à charger. Pour les imprimer ou générer un <code class="highlighter-rouge">pdf</code>, utilisez la fonction
+imprimer dans un <code class="highlighter-rouge">pdf</code> de votre navigateur.</em></p>
+
+<h2 id="suggestion-de-thématiques-pour-le-projet">Suggestion de thématiques pour le projet</h2>
+
+<h3 id="représentation-de-linformation">Représentation de l’information</h3>
+<ul>
+  <li>Compression de données</li>
+  <li>Échantillonnage</li>
+  <li>Nombres flottants (<em>e.g</em>, visualisation des erreurs)</li>
+  <li>Chaînes de caractères</li>
+</ul>
+
+<h3 id="programmation">Programmation</h3>
+<ul>
+  <li>Compréhension de listes</li>
+  <li>Tranches / Slices</li>
+  <li>Interface graphique (simple)</li>
+</ul>
+
+<h3 id="web">Web</h3>
+<ul>
+  <li>Persistance des données côté client (<em>e.g., cookies</em>)</li>
+  <li>Mécanismes de caches</li>
+  <li>Envoie de données au serveur (<em>e.g., formulaires, paramètres</em>)</li>
+  <li>Validation des données d’un formulaire</li>
+  <li>Adaptation au média (<em>e.g., responsive design</em>)</li>
+  <li>Gestion des évènements dans le DOM (<em>e.g., event bubbling and capturing</em>)</li>
+  <li>Décomposition du code JavaScript côté client</li>
+</ul>
+
+</div><div class="d-print-none"><footer class="article__footer"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet --></footer></div>
+
+</div>
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    $(function() {
+      var $this ,$scroll;
+      var $articleContent = $('.js-article-content');
+      var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+      var scroll = hasSidebar ? '.js-page-main' : 'html, body';
+      $scroll = $(scroll);
+
+      $articleContent.find('.highlight').each(function() {
+        $this = $(this);
+        $this.attr('data-lang', $this.find('code').attr('data-lang'));
       });
-    </script>
+      $articleContent.find('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').each(function() {
+        $this = $(this);
+        $this.append($('<a class="anchor d-print-none" aria-hidden="true"></a>').html('<i class="fas fa-anchor"></i>'));
+      });
+      $articleContent.on('click', '.anchor', function() {
+        $scroll.scrollToAnchor('#' + $(this).parent().attr('id'), 400);
+      });
+    });
+  });
+})();
+</script></div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
 
+<!-- end custom main bottom snippet --></div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Département Informatique - Université de Bordeaux"><meta itemprop="url" content="/bloc1/"><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"></ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© DIU EIL - Bloc 1 2019,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+    </div>
+  </div>
+</footer></div></div>
+    </div><script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $body = $('body'), $window = $(window);
+    var $pageRoot = $('.js-page-root'), $pageMain = $('.js-page-main');
+    var activeCount = 0;
+    function modal(options) {
+      var $root = this, visible, onChange, hideWhenWindowScroll = false;
+      var scrollTop;
+      function setOptions(options) {
+        var _options = options || {};
+        visible = _options.initialVisible === undefined ? false : show;
+        onChange = _options.onChange;
+        hideWhenWindowScroll = _options.hideWhenWindowScroll;
+      }
+      function init() {
+        setState(visible);
+      }
+      function setState(isShow) {
+        if (isShow === visible) {
+          return;
+        }
+        visible = isShow;
+        if (visible) {
+          activeCount++;
+          scrollTop = $(window).scrollTop() || $pageMain.scrollTop();
+          $root.addClass('modal--show');
+          $pageMain.scrollTop(scrollTop);
+          activeCount === 1 && ($pageRoot.addClass('show-modal'), $body.addClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.on('scroll', hide);
+          $window.on('keyup', handleKeyup);
+        } else {
+          activeCount > 0 && activeCount--;
+          $root.removeClass('modal--show');
+          $window.scrollTop(scrollTop);
+          activeCount === 0 && ($pageRoot.removeClass('show-modal'), $body.removeClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.off('scroll', hide);
+          $window.off('keyup', handleKeyup);
+        }
+        onChange && onChange(visible);
+      }
+      function show() {
+        setState(true);
+      }
+      function hide() {
+        setState(false);
+      }
+      function handleKeyup(e) {
+        // Char Code: 27  ESC
+        if (e.which ===  27) {
+          hide();
+        }
+      }
+      setOptions(options);
+      init();
+      return {
+        show: show,
+        hide: hide,
+        $el: $root
+      };
+    }
+    $.fn.modal = modal;
+  });
+})();
+</script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"></div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function affix(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroll,
+        offsetBottom = 0, scrollTarget = window, scroll = window.document, disabled = false, isOverallScroller = true,
+        rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop,
+        hasInit = false, curState;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroll && (scroll = _options.scroll);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $scrollTarget = $(scrollTarget);
+        isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+        $scroll = $(scroll);
+      }
+      function preCalc() {
+        top();
+        rootHeight = $root.outerHeight();
+        rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+        rootLeft = $root.offset().left;
+      }
+      function calc(needPreCalc) {
+        needPreCalc && preCalc();
+        scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+        rootBottomTop = scrollBottom - rootTop;
+      }
+      function top() {
+        if (curState !== 'top') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: 0
+          });
+          curState = 'top';
+        }
+      }
+      function fixed() {
+        if (curState !== 'fixed') {
+          $root.addClass('fixed').css({
+            left: rootLeft + 'px',
+            top: 0
+          });
+          curState = 'fixed';
+        }
+      }
+      function bottom() {
+        if (curState !== 'bottom') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: rootBottomTop + 'px'
+          });
+          curState = 'bottom';
+        }
+      }
+      function setState() {
+        var scrollTop = $scrollTarget.scrollTop();
+        if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+          fixed();
+        } else if (scrollTop < rootTop) {
+          top();
+        } else {
+          bottom();
+        }
+      }
+      function init() {
+        if(!hasInit) {
+          var interval, timeout;
+          calc(true); setState();
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState();
+          });
+          $window.on('resize', function() {
+            disabled || (calc(true), setState());
+          });
+          hasInit = true;
+        }
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true, { animation: false }); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function toc(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroller, $tocUl = $('<ul class="toc toc--ellipsis"></ul>'), $tocLi, $headings, $activeLast, $activeCur,
+        selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false,
+        headingsPos, scrolling = false, hasRendered = false, hasInit = false;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.selectors && (selectors = _options.selectors);
+        _options.container && (container = _options.container);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroller && (scroller = _options.scroller);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $headings = $(container).find(selectors).filter('[id]');
+        $scrollTarget = $(scrollTarget);
+        $scroller = $(scroller);
+      }
+      function calc() {
+        headingsPos = [];
+        $headings.each(function() {
+          headingsPos.push(Math.floor($(this).position().top));
+        });
+      }
+      function setState(element, disabled) {
+        var scrollTop = $scrollTarget.scrollTop(), i;
+        if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+        if (element) {
+          $activeCur = element;
+        } else {
+          for (i = 0; i < headingsPos.length; i++) {
+            if (scrollTop >= headingsPos[i]) {
+              $activeCur = $tocLi.eq(i);
+            } else {
+              $activeCur || ($activeCur = $tocLi.eq(i));
+              break;
+            }
+          }
+        }
+        $activeLast && $activeLast.removeClass('active');
+        ($activeLast = $activeCur).addClass('active');
+      }
+      function render() {
+        if(!hasRendered) {
+          $root.append($tocUl);
+          $headings.each(function() {
+            var $this = $(this);
+            $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+              .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+          });
+          $tocLi = $tocUl.children('li');
+          $tocUl.on('click', 'a', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            scrolling = true;
+            setState($this.parent());
+            $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+              scrolling = false;
+            });
+          });
+        }
+        hasRendered = true;
+      }
+      function init() {
+        var interval, timeout;
+        if(!hasInit) {
+          render(); calc(); setState(null, scrolling);
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState(null, scrolling);
+          });
+          $window.on('resize', window.throttle(function() {
+            if (!disabled) {
+              render(); calc(); setState(null, scrolling);
+            }
+          }, 100));
+        }
+        hasInit = true;
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();
+/*(function () {
+
+})();*/
+</script>
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();
+</script>
   </body>
 </html>
