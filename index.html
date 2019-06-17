@@ -1,421 +1,632 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-		<title>reveal.js – The HTML Presentation Framework</title>
+    <title>Git Introduction II - Remote Repositories</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="Introduction to Git Remote Repositories">
+    <meta name="author" content="Luis Ibanez">
 
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="revealjs/css/reveal.min.css">
+    <link rel="stylesheet" href="revealjs/css/theme/sky.css" id="theme">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="revealjs/lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="revealjs/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
 
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
+  </head>
 
-	<body>
+  <body>
 
-		<div class="reveal">
+    <div class="reveal">
 
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h1>Reveal.js</h1>
-					<h3>The HTML Presentation Framework</h3>
-					<p>
-						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> and <a href="https://github.com/hakimel/reveal.js/graphs/contributors">contributors</a></small>
-					</p>
-				</section>
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Git</h1>
+          <h2>Introduction</h2>
+          <h3>Part II</h3>
+          <p>
+            <small>Created by <a href="https://opensource.com/users/luis-ibanez">Luis Ibanez</a> / <a href="http://twitter.com/luisibanez">@luisibanez</a></small>
+          </p>
+        </section>
 
-				<section>
-					<h2>Hello There</h2>
-					<p>
-						reveal.js enables you to create beautiful interactive slide decks using HTML. This presentation will show you examples of what it can do.
-					</p>
-				</section>
+        <section>
+          <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">
+             <img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" />
+          </a>
+          <br />
+          <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Git Introduction</span>
+           by
+          <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Luis Ibanez</span>
+           is licensed under a
+          <a rel="license" href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+        </section>
 
-				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
-						<h2>Vertical Slides</h2>
-						<p>Slides can be nested inside of each other.</p>
-						<p>Use the <em>Space</em> key to navigate through all slides.</p>
-						<br>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Nested slides are useful for adding additional detail underneath a high level horizontal slide.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>That's it, time to go back up.</p>
-						<br>
-						<a href="#/2">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="transform: rotate(180deg); -webkit-transform: rotate(180deg);">
-						</a>
-					</section>
-				</section>
+        <section>
+          <h3>Complete First</h3>
+          <h2><a href="http://www.opensourcesoftwarepractice.org/Git-Introduction-Part-I">Introduction Part I</a></h2>
+        </section>
 
-				<section>
-					<h2>Slides</h2>
-					<p>
-						Not a coder? Not a problem. There's a fully-featured visual editor for authoring these, try it out at <a href="https://slides.com" target="_blank">https://slides.com</a>.
-					</p>
-				</section>
+        <section>
+          <h3>Clone Repository</h3>
+          <pre><code data-trim contenteditable>
+git clone git@github.com:ossp/Git-Branchy-Story-Exercise-02.git
+          </code></pre>
+          <ul>
+            <li>github username = "ossp"
+            <li>repository name = "Branchy-Story-Exercise-02"
+          </ul>
+        </section>
 
-				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
-					</p>
-					<p>
-						Hold down the <strong>alt</strong> key (<strong>ctrl</strong> in Linux) and click on any element to zoom towards it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Click again to zoom back out.
-					</p>
-					<p>
-						(NOTE: Use ctrl + click in Linux.)
-					</p>
-				</section>
+        <section>
+          <h3>Go Inside the Directory</h3>
+          <pre><code data-trim contenteditable>
+cd Branchy-Story-Exercise-02
+          </code></pre>
+        </section>
 
-				<section>
-					<h2>Touch Optimized</h2>
-					<p>
-						Presentations look great on touch devices, like mobile phones and tablets. Simply swipe through your slides.
-					</p>
-				</section>
+        <section>
+          <h3>See the remote repositories </h3>
+          <pre><code data-trim contenteditable>
+git remote -v
+          </code></pre>
+          <ul>
+            <li>"-v" is for "verbose"
+          </ul>
+        </section>
 
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
+        <section>
+          <h4>At this point we have a</h4>
+					<h3><a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows#Centralized-Workflow">Shared Repository</a></h2>
+          <a href="#" class="image">
+            <img width="900" src="http://git-scm.com/figures/18333fig0501-tn.png" alt="Shared Repository">
+          </a>
+					<p>Courtesy of <a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows">git-scm Book</a>.</p>
+        </section>
 
-						Write content using inline or external Markdown.
-						Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
+        <section>
+          <h3>This configuration</h3>
+          <h3>is used for a</h3>
+					<h2><a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows#Centralized-Workflow">Centralized Workflow</a></h2>
+        </section>
 
-						```
-						<section data-markdown>
-						  ## Markdown support
+        <section>
+          <h3>Git enables</h3>
+          <h3>other configurations...</h3>
+        </section>
 
-						  Write content using inline or external Markdown.
-						  Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
-				</section>
+        <section>
+          <h3>to support</h3>
+          <h3>other workflows...</h3>
+        </section>
 
-				<section>
-					<section id="fragments">
-						<h2>Fragments</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<p><span class="fragment">... a</span> <span class="fragment">fragmented</span> <span class="fragment">slide.</span></p>
+        <section>
+          <h4>For example</h4>
+          <h3><a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows#Integration-Manager-Workflow">Integration Manager Workflow</a></h3>
+          <a href="#" class="image">
+            <img width="900" src="http://git-scm.com/figures/18333fig0502-tn.png" alt="Integration manager workflow">
+          </a>
+					<p>Courtesy of <a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows">git-scm Book</a>.</p>
+        </section>
 
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's different types of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p>
-							<span style="display: inline-block;" class="fragment fade-right">fade-right, </span>
-							<span style="display: inline-block;" class="fragment fade-up">up, </span>
-							<span style="display: inline-block;" class="fragment fade-down">down, </span>
-							<span style="display: inline-block;" class="fragment fade-left">left</span>
-						</p>
-						<p class="fragment fade-in-then-out">fade-in-then-out</p>
-						<p class="fragment fade-in-then-semi-out">fade-in-then-semi-out</p>
-						<p>Highlight <span class="fragment highlight-red">red</span> <span class="fragment highlight-blue">blue</span> <span class="fragment highlight-green">green</span></p>
-					</section>
-				</section>
+        <section>
+          <h2><a href="http://git-scm.com/book/en/Distributed-Git-Distributed-Workflows#Integration-Manager-Workflow">Let's do this ! </a></h2>
+        </section>
 
-				<section id="transitions">
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like: <br>
-						<a href="?transition=none#/transitions">None</a> -
-						<a href="?transition=fade#/transitions">Fade</a> -
-						<a href="?transition=slide#/transitions">Slide</a> -
-						<a href="?transition=convex#/transitions">Convex</a> -
-						<a href="?transition=concave#/transitions">Concave</a> -
-						<a href="?transition=zoom#/transitions">Zoom</a>
-					</p>
-				</section>
+        <section>
+          <h3>You already have</h3>
+          <h3>local private</h3>
+          <h3>repositories</h3>
+        </section>
 
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						reveal.js comes with a few themes built in: <br>
-						<!-- Hacks to swap themes after the page has loaded. Not flexible and only intended for the reveal.js demo deck. -->
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black (default)</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/league.css'); return false;">League</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/sky.css'); return false;">Sky</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/beige.css'); return false;">Beige</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/simple.css'); return false;">Simple</a> <br>
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/serif.css'); return false;">Serif</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/blood.css'); return false;">Blood</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/night.css'); return false;">Night</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/moon.css'); return false;">Moon</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/solarized.css'); return false;">Solarized</a>
-					</p>
-				</section>
+        <section>
+          <h3>Let's create</h3>
+          <h3>your public</h3>
+          <h3>repositories</h3>
+        </section>
 
-				<section>
-					<section data-background="#dddddd">
-						<h2>Slide Backgrounds</h2>
-						<p>
-							Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color formats are supported.
-						</p>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png">
-						<h2>Image Backgrounds</h2>
-						<pre><code class="hljs html">&lt;section data-background="image.png"&gt;</code></pre>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png" data-background-repeat="repeat" data-background-size="100px">
-						<h2>Tiled Backgrounds</h2>
-						<pre><code class="hljs html" style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-					</section>
-					<section data-background-video="https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.mp4,https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.webm" data-background-color="#000000">
-						<div style="background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px;">
-							<h2>Video Backgrounds</h2>
-							<pre><code class="hljs html" style="word-wrap: break-word;">&lt;section data-background-video="video.mp4,video.webm"&gt;</code></pre>
-						</div>
-					</section>
-					<section data-background="http://i.giphy.com/90F8aUepslB84.gif">
-						<h2>... and GIFs!</h2>
-					</section>
-				</section>
+        <section>
+          <h3>We do this</h3>
+          <h3>by <a href="https://help.github.com/articles/fork-a-repo">forking</a></h3>
+          <h3>in Github</h3>
+        </section>
 
-				<section data-transition="slide" data-background="#4d7e65" data-background-transition="zoom">
-					<h2>Background Transitions</h2>
-					<p>
-						Different background transitions are available via the backgroundTransition option. This one's called "zoom".
-					</p>
-					<pre><code class="hljs javascript">Reveal.configure({ backgroundTransition: 'zoom' })</code></pre>
-				</section>
+        <section>
+          <h2>Fork the Repository</h2>
+          <a href="#" class="image">
+            <img src="images/GitIntroductionPartII-001.png" alt="Fork the repository">
+          </a>
+          </p>
+        </section>
 
-				<section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
-					<h2>Background Transitions</h2>
-					<p>
-						You can override background transitions per-slide.
-					</p>
-					<pre><code class="hljs html" style="word-wrap: break-word;">&lt;section data-background-transition="zoom"&gt;</code></pre>
-				</section>
+        <section>
+          <h2>Copy the Fork Address</h2>
+          <a href="#" class="image">
+            <img src="images/GitIntroductionPartII-002.png" alt="Fork address">
+          </a>
+          </p>
+        </section>
 
-				<section data-background-iframe="https://hakim.se" data-background-interactive>
-					<div style="position: absolute; width: 40%; right: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px; font-size: 20px; text-align: left;">
-						<h2>Iframe Backgrounds</h2>
-						<p>Since reveal.js runs on the web, you can easily embed other web content. Try interacting with the page in the background.</p>
-					</div>
-				</section>
+        <section>
+          <h3>Now go to your</h3>
+          <h3>local private</h3>
+          <h3>repository</h3>
+        </section>
 
-				<section>
-					<h2>Pretty Code</h2>
-					<pre><code class="hljs" data-trim data-line-numbers="4,8-11">
-import React, { useState } from 'react';
+        <section>
+          <h3>Add the Remote repository</h3>
+          <pre><code data-trim contenteditable>
+git remote add luisgithub git@github.com:luisibanez/Git-Branchy-Story-Exercise-02.git
+          </code></pre>
+          <ul>
+            <li>luisgithub = local name for remote repository
+          </ul>
+        </section>
 
-function Example() {
-  const [count, setCount] = useState(0);
+        <section>
+          <h3>See the remote repositories </h3>
+          <pre><code data-trim contenteditable>
+git remote -v
+          </code></pre>
+          <a href="#" class="image">
+            <img src="images/GitIntroductionPartII-003.png" alt="Add remote">
+          </a>
+        </section>
 
-  return (
-    &lt;div&gt;
-      &lt;p&gt;You clicked {count} times&lt;/p&gt;
-      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
-        Click me
-      &lt;/button&gt;
-    &lt;/div&gt;
-  );
-}
-					</code></pre>
-					<p>Code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
+        <section>
+          <h1>Your Turn !</h1>
+        </section>
 
-				<section>
-					<h2>Marvelous List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
-				</section>
+       <section>
+          <h2>Add Remote</h2>
+          <h2>Repositories</h2>
+          <p>Work with your Team</p>
+          <ul>
+            <li>Ask team members for their fork address
+            <li>Add their address as a remote
+            <li>Name the remotes after their first names
+          </ul>
+        </section>
 
-				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
-				</section>
+        <section>
+          <h2>Use HTTPS</h2>
+          <p>For the address of your team mates</p>
+          <ul>
+            <li>Use:
+            <li>https://github.com/aaronsw/...
+            <li>instead of
+            <li>git@github.com:aaronsw/...
+          </ul>
+        </section>
 
-				<section>
-					<h2>Tabular Tables</h2>
-					<table>
-						<thead>
-							<tr>
-								<th>Item</th>
-								<th>Value</th>
-								<th>Quantity</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Apples</td>
-								<td>$1</td>
-								<td>7</td>
-							</tr>
-							<tr>
-								<td>Lemonade</td>
-								<td>$2</td>
-								<td>18</td>
-							</tr>
-							<tr>
-								<td>Bread</td>
-								<td>$3</td>
-								<td>2</td>
-							</tr>
-						</tbody>
-					</table>
-				</section>
+        <section>
+          <h3>Now let's create</h3>
+          <h3>a team directory</h3>
+          <h3>to work together</h3>
+        </section>
 
-				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">The nice thing about standards is that there are so many to choose from</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
-					</blockquote>
-				</section>
+        <section>
+          <h3>One Team Member</h3>
+          <h3>Creates Team Directory</h3>
+          <pre><code data-trim contenteditable>
+mkdir FantasticFour
 
-				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
-				</section>
+cd FantasticFour
 
-				<section>
-					<h2>Speaker View</h2>
-					<p>There's a <a href="https://github.com/hakimel/reveal.js#speaker-notes">speaker view</a>. It includes a timer, preview of the upcoming slide as well as your speaker notes.</p>
-					<p>Press the <em>S</em> key to try it out.</p>
+nano README.md
 
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
-				</section>
+cd ..
+          </code></pre>
+        </section>
 
-				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, here's an example:</p>
-					<iframe data-src="https://www.slideshare.net/slideshow/embed_code/42840540" width="445" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:3px solid #666; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-				</section>
+        <section>
+          <h3>One Team Member</h3>
+          <h3>Commits Team Directory</h3>
+          <pre><code data-trim contenteditable>
+git add FantasticFour
 
-				<section>
-					<h2>Global State</h2>
-					<p>
-						Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-						will be added as a class to the document element when the slide is open. This lets you
-						apply broader style changes, like switching the page background.
-					</p>
-				</section>
+git commit -m "Started team directory"
+          </code></pre>
+          <h4>and push it upstream</h4>
+          <pre><code data-trim contenteditable>
+git push origin master
+          </code></pre>
+        </section>
 
-				<section data-state="customevent">
-					<h2>State Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
-Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
+        <section>
+          <h3>Your push may fail... </h3>
+          <h4>with a message like this</h4>
+          <pre><code data-trim contenteditable>
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:ossp/Git-Branchy-Story-Exercise-01.git'
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. Check out this branch and merge the remote changes
+hint: (e.g. 'git pull') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+          </code></pre>
+        </section>
 
-				<section>
-					<h2>Take a Moment</h2>
-					<p>
-						Press B or . on your keyboard to pause the presentation. This is helpful when you're on stage and want to take distracting slides off the screen.
-					</p>
-				</section>
+        <section>
+          <h3>Your push may fail... </h3>
+          <h4>with a message like this</h4>
+          <a href="#" class="image">
+            <img src="images/GitIntroductionPartII-007.png" alt="Check logs">
+          </a>
+        </section>
 
-				<section>
-					<h2>Much more</h2>
-					<ul>
-						<li>Right-to-left support</li>
-						<li><a href="https://github.com/hakimel/reveal.js#api">Extensive JavaScript API</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#auto-sliding">Auto-progression</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#parallax-background">Parallax backgrounds</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#keyboard-bindings">Custom keyboard bindings</a></li>
-					</ul>
-				</section>
+        <section>
+          <h3>This just means</h3>
+          <h3>than someone else</h3>
+          <h3>pushed before you</h3>
+        </section>
 
-				<section style="text-align: left;">
-					<h1>THE END</h1>
-					<p>
-						- <a href="https://slides.com">Try the online editor</a> <br>
-						- <a href="https://github.com/hakimel/reveal.js">Source code &amp; documentation</a>
-					</p>
-				</section>
+        <section>
+          <h3>so now</h3>
+          <h3>you have to update</h3>
+          <h3>your local repository</h3>
+        </section>
 
-			</div>
+        <section>
+          <h4>Update With the Command</h4>
+          <pre><code data-trim contenteditable>
+git pull origin master
+          </code></pre>
+          <h4>and then try again the Command</h4>
+          <pre><code data-trim contenteditable>
+git push origin master
+          </code></pre>
+        </section>
 
-		</div>
+        <section>
+          <h3>You may have</h3>
+          <h3>to do it</h3>
+          <h3>multiple times</h3>
+        </section>
 
-		<script src="js/reveal.js"></script>
+        <section>
+          <h1>Breath!</h1>
+          <h1>Smile!</h1>
+        </section>
 
-		<script>
-			// More info https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				center: true,
-				hash: true,
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
-				// More info https://github.com/hakimel/reveal.js#dependencies
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true },
-					{ src: 'plugin/search/search.js', async: true },
-					{ src: 'plugin/zoom-js/zoom.js', async: true },
-					{ src: 'plugin/notes/notes.js', async: true }
-				]
-			});
-		</script>
+        <section>
+          <h3>All Team Members</h3>
+          <h3>Update their local repositories</h3>
+          <pre><code data-trim contenteditable>
+git pull origin master
+          </code></pre>
+        </section>
 
-	</body>
+        <section>
+          <h3>All Team Members</h3>
+          <h3>Look at recent commits</h3>
+          <pre><code data-trim contenteditable>
+git log
+          </code></pre>
+          <a href="#" class="image">
+            <img src="images/GitIntroductionPartII-004.png" alt="Check logs">
+          </a>
+        </section>
+
+       <section>
+          <h2>Note That</h2>
+          <p>The log tells you:</p>
+          <ul>
+            <li>Who did it
+            <li>When it was done
+          </ul>
+        </section>
+
+        <section>
+          <h3>All Team Members</h3>
+          <h3>Look at recent commits</h3>
+          <h4>Using short format</h4>
+          <pre><code data-trim contenteditable>
+git log --oneline
+          </code></pre>
+          <a href="#" class="image">
+            <img src="images/GitIntroductionPartII-005.png" alt="Check logs one lined">
+          </a>
+       </section>
+
+       <section>
+          <h2>Note That</h2>
+          <p>Every commit</p>
+          <p>is identified by a hash</p>
+          <p>such as:</p>
+          <pre><code data-trim contenteditable>
+5d7d137a3592fe402a4bc282375c2d8bb878326c
+          </code></pre>
+       </section>
+
+       <section>
+          <h3>You can use</h3>
+          <h3>the first characters</h3>
+          <h3>to refer</h3>
+          <h3>to this commit</h3>
+       </section>
+
+       <section>
+          <h2>You can use</h2>
+          <h3>"git show"</h3>
+          <pre><code data-trim contenteditable>
+git show 5d7d137
+          </code></pre>
+          <h4>to find out more</h4>
+          <h4>about this commit</h4>
+        </section>
+
+        <section>
+          <h3>See commit details</h3>
+          <pre><code data-trim contenteditable>
+git show 5d7d137
+          </code></pre>
+          <a href="#" class="image">
+            <img src="images/GitIntroductionPartII-006.png" alt="Add remote">
+          </a>
+        </section>
+
+        <section>
+          <h2>Time to</h2>
+          <h2>Go Wild!</h2>
+        </section>
+
+        <section>
+          <h2>Each Team Member</h2>
+          <ul>
+            <li>Picks a "character" name
+            <li>Go into the team directory
+            <li>Creates a file with that name
+            <li>and extension ".md"
+          </ul>
+        </section>
+
+        <section>
+          <h2>Each Team Member</h2>
+          <ul>
+            <li>Inside the file write one sentence
+            <li>Describing the state of the character
+          </ul>
+        </section>
+
+        <section>
+          <h2>Each Team Member</h2>
+          <ul>
+            <li>Git add the file
+            <li>Git commit
+            <li>Git push upstream
+          </ul>
+        </section>
+
+       <section>
+          <h3>Your push may fail... </h3>
+          <h4>with a message like this</h4>
+          <pre><code data-trim contenteditable>
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:ossp/Git-Branchy-Story-Exercise-01.git'
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. Check out this branch and merge the remote changes
+hint: (e.g. 'git pull') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>This just means</h3>
+          <h3>than someone else</h3>
+          <h3>pushed before you</h3>
+        </section>
+
+        <section>
+          <h3>so now</h3>
+          <h3>you have to update</h3>
+          <h3>your local repository</h3>
+        </section>
+
+        <section>
+          <h4>Update With the Command</h4>
+          <pre><code data-trim contenteditable>
+git pull origin master
+          </code></pre>
+          <h4>and then try again the Command</h4>
+          <pre><code data-trim contenteditable>
+git push origin master
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>You may have</h3>
+          <h3>to do it</h3>
+          <h3>multiple times</h3>
+        </section>
+
+        <section>
+          <h2>Each Team Member</h2>
+          <ul>
+            <li>Edit the file of her/his character
+            <li>Change the state of the character
+          </ul>
+        </section>
+
+        <section>
+          <h2>Each Team Member</h2>
+          <ul>
+            <li>Git create branch
+            <li>Git select branch
+            <li>Git add
+            <li>Git commit into branch
+          </ul>
+        </section>
+
+        <section>
+          <h4>Use the Commands</h4>
+          <pre><code data-trim contenteditable>
+git branch MyNewBranch
+git checkout MyNewBranch
+vim myCharacter.md
+git add myCharacter.md
+git commit
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>The commit message</h3>
+          <h4>Must explain "how" and "why"</h4>
+          <h4>the character changed state</h4>
+        </section>
+
+        <section>
+          <h2>Each Team Member</h2>
+          <ul>
+            <li>Git move to master branch
+            <li>Git update master from upstream
+            <li>Git merge branch into master
+            <li>Git push master upstream
+          </ul>
+        </section>
+
+        <section>
+          <h4>Use the Commands</h4>
+          <pre><code data-trim contenteditable>
+git checkout master
+git pull origin master
+git merge --no-ff MyNewBranch
+git push origin master
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Reading the Story</h2>
+          <h4>as the story grows</h4>
+          <h4>you can read it</h4>
+          <h4>by using the command:</h4>
+          <pre><code data-trim contenteditable>
+git  log  --no-merges   .
+          </code></pre>
+        </section>
+
+        <section>
+          <h4>This will show you</h4>
+          <h4>what happened</h4>
+          <h4>to all the characters</h4>
+          <h4>in that directory</h4>
+        </section>
+
+        <section>
+          <h3>To read the Story</h3>
+          <h4>of a single character</h4>
+          <h4>use the command:</h4>
+          <pre><code data-trim contenteditable>
+git  log  --no-merges   myCharacter.md
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>To read the summary</h3>
+          <h4>of the story</h4>
+          <h4>use the command:</h4>
+          <pre><code data-trim contenteditable>
+git  log  --no-merges   myCharacter.md --oneline
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>You can see the Graph</h3>
+          <h4>with the command</h5>
+          <pre><code data-trim contenteditable>
+git log  --graph
+          </code></pre>
+          <a href="#" class="image">
+            <img src="images/GitIntroductionPartII-008.png" alt="Add remote">
+          </a>
+        </section>
+
+        <section>
+          <h3>You can see the Graph</h3>
+          <h4>with the tool gitk</h4>
+          <pre><code data-trim contenteditable>
+gitk
+          </code></pre>
+          <a href="#" class="image">
+            <img src="images/GitIntroductionPartII-009.png" alt="Add remote">
+          </a>
+        </section>
+
+
+        <section>
+          <h1>Your Turn !</h1>
+        </section>
+
+        <section>
+          <h2>Unleash your imagination!</h2>
+        </section>
+
+        <section>
+          <h3>Coordinate</h3>
+          <h3>with your team mates</h3>
+          <ul>
+            <li>Interactions between your characters
+            <li>Apply the state changes to your files
+            <li>Git commit, add, merge, every time
+            <li>Read the story as it progresses
+          </ul>
+        </section>
+
+        <section>
+          <h2>Complete Five</h2>
+          <h2>Interactions</h2>
+          <h2>per character</h2>
+        </section>
+
+        <section>
+          <h1>Breath!</h1>
+          <h1>Smile!</h1>
+        </section>
+
+        <section>
+          <h1>THE END</h1>
+          <h3>BY Luis Ibanez</h3>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="revealjs/lib/js/head.min.js"></script>
+    <script src="revealjs/js/reveal.min.js"></script>
+
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'revealjs/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+    </script>
+
+  </body>
 </html>
