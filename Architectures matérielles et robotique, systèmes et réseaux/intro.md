@@ -62,7 +62,12 @@ Langage assembleur :
 ### Multiplication  définie
 
 L'objectif est de multiplier 7 à chaque tour de boucle (5 fois)
-
+On met 7 dans le reg
+On met 0 dans ecx
+On met le cpteur de boulce dans eax
+On mémorise 7 dasn ebx (pour l'additionner à chq tour de boucle)
+Dans la boucle on fait l'addition et on décrémente eax
+Le résultat de l'opération modifie le ZF qui permet de faire la boucle (car elle dépend du ZF)
 
     .pos 0
         irmovl 7,%ebx
@@ -80,3 +85,13 @@ L'objectif est de multiplier 7 à chaque tour de boucle (5 fois)
 
     
 ----
+Réseau
+==
+Dans WireShark, dans la trame DNS s'il y a 2 ligne similaire => ipv4 et ipV6
+
+arp : vérifie l'existance d'une IP sur le réseau
+nslookup : vérifie l'adresse IP
+netstat : vérifie les machines connectées sur le poste
+
+## Le routage
+pour vérifier si l'on est dans le même réseau (routeur), on fait un et entre les 2 adresses IP sur le netID. 
