@@ -95,3 +95,6 @@ netstat : vérifie les machines connectées sur le poste
 
 ## Le routage
 pour vérifier si l'on est dans le même réseau (routeur), on fait un et entre les 2 adresses IP sur le netID. 
+
+## biliothèque python pour le réseau
+utilisation au cremi à l'aide de scappy3
